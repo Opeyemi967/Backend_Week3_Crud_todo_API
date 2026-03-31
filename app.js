@@ -8,6 +8,9 @@ app.use(express.json()); // Parse JSON bodies
 let todos = [
   { id: 1, task: "Learn Node.js", completed: false },
   { id: 2, task: "Build CRUD API", completed: false },
+  { id: 3, task: "Add gitignore file", completed: true },
+  { id: 4, task: "Remove the node_modules from the repo", completed: true },
+  { id: 5, task: "Validate the POST request", completed: true }
 ];
 
 // GET All – Read
