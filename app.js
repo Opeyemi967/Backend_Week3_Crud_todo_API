@@ -10,7 +10,7 @@ let todos = [
   { id: 2, task: "Build CRUD API", completed: false },
   { id: 3, task: "Add gitignore file", completed: true },
   { id: 4, task: "Remove the node_modules from the repo", completed: true },
-  { id: 5, task: "Validate the POST request", completed: true }
+  { id: 5, task: "Validate the POST request", completed: true },
 ];
 
 // GET All – Read
@@ -27,6 +27,27 @@ app.get("/todos/:id", (req, res) => {
   }
 
   res.status(200).json(todo);
+});
+
+// POST New – Create with validation
+app.post("/todos", (req, res) => {
+  const { task } = req.body; // this create a "Destructuring" from request body
+
+  // Validation
+  if (!task) {
+    //this check if the task is missing, if it is missing run the error
+    return res.status(400).json({ error: "Task field is required" });
+  }
+
+  //Create a newTodo that generate new ID, task, condition
+  const newTodo = {
+    id: todos.length + 1,
+    task, //shorthand for task: task
+    completed: false, //forces a default false value and prevent the user from setting it manually
+  };
+
+  todos.push(newTodo); //this add the newTodo to the dummy database (array)
+  res.status(201).json(newTodo);
 });
 
 // PATCH Update – Partial
