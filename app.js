@@ -18,6 +18,12 @@ app.get("/todos", (req, res) => {
   res.status(200).json(todos); // Send array as JSON
 });
 
+// Get --To filter out active user only
+app.get("/todos/active", (req, res) => {
+  const activeTodos = todos.filter((t) => !t.completed);
+  res.status(200).json(activeTodos);
+});
+
 // GET Single – Read by ID
 app.get("/todos/:id", (req, res) => {
   const todo = todos.find((t) => t.id === parseInt(req.params.id));
@@ -28,6 +34,7 @@ app.get("/todos/:id", (req, res) => {
 
   res.status(200).json(todo);
 });
+
 
 // POST New – Create with validation
 app.post("/todos", (req, res) => {
@@ -43,7 +50,6 @@ app.post("/todos", (req, res) => {
   const newTodo = {
     id: todos.length + 1,
     task, //shorthand for task: task
-    completed: false, //forces a default false value and prevent the user from setting it manually
   };
 
   todos.push(newTodo); //this add the newTodo to the dummy database (array)
@@ -65,12 +71,7 @@ app.delete("/todos/:id", (req, res) => {
   todos = todos.filter((t) => t.id !== id); // Array.filter() – non-destructive
   if (todos.length === initialLength)
     return res.status(404).json({ error: "Not found" });
-  res.status(204).send(); // Silent success
-});
-
-app.get("/todos/completed", (req, res) => {
-  const completed = todos.filter((t) => t.completed);
-  res.json(completed); // Custom Read!
+  res.status(200).json({ message: "Todo deleted successfully" });
 });
 
 app.use((err, req, res, next) => {
